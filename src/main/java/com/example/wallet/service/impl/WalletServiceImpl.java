@@ -1,22 +1,28 @@
 package com.example.wallet.service.impl;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
 import com.example.wallet.converter.WalletConverter;
 import com.example.wallet.exception.AddressAlreadyExistsException;
 import com.example.wallet.exception.EntityNotFoundException;
 import com.example.wallet.exception.TenantNotFoundException;
 import com.example.wallet.model.dto.WalletDTO;
+import com.example.wallet.model.dto.WalletEnrichedDTO;
 import com.example.wallet.model.persistence.WalletPersistent;
 import com.example.wallet.repository.TenantRepository;
 import com.example.wallet.repository.WalletRepository;
 import com.example.wallet.service.WalletService;
+import com.example.wallet.util.CryptoInfo;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,6 +39,12 @@ public class WalletServiceImpl implements WalletService {
   @Autowired
   private WalletConverter walletConverter;
 
+  @Autowired
+  private WebClient webClientCrypto;
+
+  @Value("${rapidapi.uri}")
+  private String rapidapiUri;
+
   Logger logger = LoggerFactory.getLogger(WalletServiceImpl.class);
  
   @Override
@@ -48,6 +60,28 @@ public class WalletServiceImpl implements WalletService {
   @Override
   public Mono<WalletDTO> findById(Long id) {
     return walletRepository.findById(id).map(walletConverter.persistentToDto());
+  }
+
+  @Override
+  public Mono<WalletEnrichedDTO> findByIdEnriched(Long id) {
+    return walletRepository.findById(id)
+        .map(walletConverter.persistentToDto())
+        .flatMap(w -> enrichWithData(w));
+  }
+
+  private Mono<WalletEnrichedDTO> enrichWithData(WalletDTO w) {
+                 
+    return webClientCrypto.method(HttpMethod.GET)
+      .uri(rapidapiUri + w.getCrypto().toString())
+      .retrieve()
+      .bodyToMono(CryptoInfo.class)
+        .onErrorReturn(CryptoInfo
+            .builder()
+            .symbol(w.getCrypto().toString())
+            .to_fiat(w.getCurrency().toString())
+            .rate(BigDecimal.valueOf(-1L))
+            .build())
+      .map(c -> walletConverter.enrich(w, c.getRate()));
   }
 
   @Override

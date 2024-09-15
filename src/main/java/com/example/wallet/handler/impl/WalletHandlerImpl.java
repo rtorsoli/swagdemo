@@ -91,11 +91,11 @@ public class WalletHandlerImpl implements WalletHandler {
                 .doOnError(ex -> {
                     throw new InvalidParamException(HttpStatus.BAD_REQUEST,"id");
                 })
-                .flatMap(id -> walletService.findById(id))
+                .flatMap(id -> walletService.findByIdEnriched(id))
                 .switchIfEmpty(Mono.error(new EntityNotFoundException(HttpStatus.NOT_FOUND, "Wallet not found")))
                 .flatMap(wallet -> ServerResponse
                         .ok()
-                        .bodyValue(walletConverter.dtoToResponse().apply(wallet)))
+                        .bodyValue(walletConverter.dtoToEnrichResponse().apply(wallet)))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 

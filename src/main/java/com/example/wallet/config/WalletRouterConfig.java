@@ -17,8 +17,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class WalletRouterConfig {
 
-        private final TenantHandler tenantHandler;
-        private final WalletHandler walletHandler;
+    private final TenantHandler tenantHandler;
+    private final WalletHandler walletHandler;
     private final LoginHandler loginHandler;
 
     public WalletRouterConfig(TenantHandler tenantHandler, WalletHandler walletHandler, LoginHandler loginHandler) {

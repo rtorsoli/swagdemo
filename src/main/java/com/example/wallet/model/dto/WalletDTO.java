@@ -7,12 +7,12 @@ import com.example.wallet.model.enumeration.CurrencyEnum;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @Accessors(fluent = false, chain = true)
 public class WalletDTO implements DTO {
     
