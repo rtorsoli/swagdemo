@@ -3,6 +3,7 @@ package com.example.wallet.model.persistence;
 import java.time.OffsetDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -34,6 +35,10 @@ public class TenantPersistent implements Persistent {
 
     @Column("CREATEDAT")
     private OffsetDateTime createdAt;
+
     @Column("UPDATEDAT")
     private OffsetDateTime updatedAt;
+    
+    @Version
+    private Long version;
 }

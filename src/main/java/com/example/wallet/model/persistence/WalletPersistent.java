@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -41,4 +42,7 @@ public class WalletPersistent implements Persistent {
 
     @Column("CREATEDAT")
     private OffsetDateTime createdAt;
+    
+    @Version
+    private Long version;
 }
