@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS tenants ( 
+     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     firstname VARCHAR(255) NOT NULL, 
+     lastname VARCHAR(255) NOT NULL, 
+     nickname VARCHAR(255) NOT NULL,
+     pwd VARCHAR(255) NOT NULL,
+     email VARCHAR(255) NOT NULL,
+     createdAt TIMESTAMP WITH TIME ZONE NOT NULL,
+     updatedAt TIMESTAMP WITH TIME ZONE );
+
+ALTER TABLE tenants ALTER COLUMN createdAt SET DEFAULT CURRENT_TIMESTAMP;
+
+
+CREATE UNIQUE INDEX "nick_idx" ON tenants (nickname);
+CREATE UNIQUE INDEX "email_idx" ON tenants (email);
+    
+
+     

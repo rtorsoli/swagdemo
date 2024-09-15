@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: wallet
+  threads:
+    virtual:
+      enabled: true
+  security:
+    user:
+      name: admin
+      password: admin
+server:
+  port: 8080
+management:
+  endpoint:
+      health:
+        enabled: true
+  endpoints:
+    web:
+      base-path: /api
