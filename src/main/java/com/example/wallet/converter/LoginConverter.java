@@ -10,7 +10,7 @@ import com.example.wallet.model.response.LoginResponse;
 
 
 @Component
-public class LoginConverter implements BaseConverter<LoginRequest, LoginDTO>{
+public class LoginConverter {
 
     private LoginConverter() {
         super();

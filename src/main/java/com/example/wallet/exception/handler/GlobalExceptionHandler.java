@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
 
+import com.example.wallet.exception.AddressAlreadyExistsException;
 import com.example.wallet.exception.EmailAlreadyExistsException;
 import com.example.wallet.exception.EntityNotFoundException;
 import com.example.wallet.exception.InvalidLoginException;
@@ -16,6 +17,7 @@ import com.example.wallet.exception.InvalidParamException;
 import com.example.wallet.exception.InvalidRequestException;
 import com.example.wallet.exception.MalformedRequestException;
 import com.example.wallet.exception.NickNameAlreadyExistsException;
+import com.example.wallet.exception.TenantNotFoundException;
 
 
 @RestControllerAdvice
@@ -34,6 +36,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ProblemDetail handleValidation(EntityNotFoundException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problemDetail.setTitle("Entity not found");
+        problemDetail.setStatus(ex.getHttpStatus());
+        problemDetail.setProperty("errors", List.of(ex.getMessage()));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(TenantNotFoundException.class)
+    protected ProblemDetail handleValidation(TenantNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle("Tenant not found");
         problemDetail.setStatus(ex.getHttpStatus());
         problemDetail.setProperty("errors", List.of(ex.getMessage()));
         return problemDetail;
@@ -59,6 +70,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NickNameAlreadyExistsException.class)
     protected ProblemDetail handleValidation(NickNameAlreadyExistsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getHttpStatus(), ex.getMessage());
+        problemDetail.setTitle("Request is not valid");
+        problemDetail.setStatus(ex.getHttpStatus());
+        problemDetail.setProperty("errors", List.of(ex.getMessage()));
+        return problemDetail;
+    }
+
+    
+    @ExceptionHandler(AddressAlreadyExistsException.class)
+    protected ProblemDetail handleValidation(AddressAlreadyExistsException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getHttpStatus(), ex.getMessage());
         problemDetail.setTitle("Request is not valid");
         problemDetail.setStatus(ex.getHttpStatus());

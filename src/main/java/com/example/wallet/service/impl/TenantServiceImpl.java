@@ -52,18 +52,21 @@ public class TenantServiceImpl implements TenantService {
     TenantPersistent persistent = tenantConverter.dtoToPersistent().apply(tenant);
     persistent.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC))
         .setPassword(passwordEncoder.encode(tenant.getPassword()));
+    
     return tenantRepository.findByNickname(persistent.getNickname())
-          .doOnNext(t -> {
-            throw new NickNameAlreadyExistsException(HttpStatus.BAD_REQUEST,
-              String.format("Nickname already exists", t.getId()));
-          })
-          .switchIfEmpty(tenantRepository.findByEmail(persistent.getEmail()))
-          .doOnNext(t -> {
-              throw new EmailAlreadyExistsException(HttpStatus.BAD_REQUEST,
-                  String.format("Email already exists", t.getId()));
-          })
-          .switchIfEmpty(tenantRepository.save(persistent))
-          .map(tenantConverter.persistentToDto());
+        .doOnNext( t -> {
+          throw new NickNameAlreadyExistsException(HttpStatus.BAD_REQUEST,
+              String.format("Nickname already exists", tenant.getNickname()));
+        })
+        .switchIfEmpty(
+            tenantRepository.findByEmail(persistent.getEmail())
+        )
+        .doOnNext(t -> {
+            throw new EmailAlreadyExistsException(HttpStatus.BAD_REQUEST,
+                  String.format("Email already exists", t.getEmail()));
+        })
+        .switchIfEmpty(tenantRepository.save(persistent))
+        .flatMap(t -> Mono.just(tenantConverter.persistentToDto().apply(t)));
   }
 
   public Mono<TenantDTO> update(TenantDTO tenant) {
@@ -73,8 +76,8 @@ public class TenantServiceImpl implements TenantService {
     return tenantRepository.findById(tenant.getId())
         .switchIfEmpty(Mono.error(
             new EntityNotFoundException(HttpStatus.NOT_FOUND, String.format("Tenant %d not found", tenant.getId()))))
-        .doOnNext(persistent -> tenantRepository.save(updated.setPassword(persistent.getPassword()).setCreatedAt(persistent.getCreatedAt())).subscribe())
-        .map(tenantConverter.persistentToDto());
+        .flatMap(persistent -> tenantRepository.save(updated.setPassword(persistent.getPassword()).setCreatedAt(persistent.getCreatedAt())))
+        .flatMap(t -> Mono.just(tenantConverter.persistentToDto().apply(t)));
   }
 
   public Mono<Void> deleteById(Long id) {

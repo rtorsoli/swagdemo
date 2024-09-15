@@ -48,3 +48,10 @@ INSERT INTO tenants (firstname, lastname, nickname, pwd, email) VALUES ('Rebecca
 INSERT INTO tenants (firstname, lastname, nickname, pwd, email) VALUES ('Giulia', 'Messori', 'gmessori', '$2a$10$v4elNdxU9rPCtGYVNKpeYOn6ob.YJRZIZw2MwlSQAdsRqCb8geXq6', 'gmessori@gmail.com');
 INSERT INTO tenants (firstname, lastname, nickname, pwd, email) VALUES ('Alice', 'Rinaldi', 'arinaldi', '$2a$10$v4elNdxU9rPCtGYVNKpeYOn6ob.YJRZIZw2MwlSQAdsRqCb8geXq6', 'arinaldi@gmail.com');
 INSERT INTO tenants (firstname, lastname, nickname, pwd, email) VALUES ('Ludovica', 'Rinaldi', 'l.rinaldi', '$2a$10$v4elNdxU9rPCtGYVNKpeYOn6ob.YJRZIZw2MwlSQAdsRqCb8geXq6', 'l.rinaldi@gmail.com');
+
+
+INSERT INTO wallets (address, crypto, name, description, currency, quantity, tenantId) VALUES ('1MbeQFmHo9b69kCfFa6yBr7BQX4NzJFQq1', 'BTC', 'Sample Wallet-1', 'Sample wallet for demo', 'USD', 0.00166228046262, 1);
+INSERT INTO wallets (address, crypto, name, description, currency, quantity, tenantId) VALUES ('bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq', 'BTC', 'Sample Wallet-b', 'Sample wallet for demo', 'USD', 0.00166228046262, 1);
+INSERT INTO wallets (address, crypto, name, description, currency, quantity, tenantId) VALUES ('1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2', 'BTC', 'Sample Wallet-1', 'Sample wallet for demo', 'USD', 0.00166228046262, 1);
+INSERT INTO wallets (address, crypto, name, description, currency, quantity, tenantId) VALUES ('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy', 'BTC', 'Sample Wallet-3', 'Sample wallet for demo', 'USD', 0.00166228046262, 1);
+

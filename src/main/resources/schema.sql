@@ -10,9 +10,25 @@ CREATE TABLE IF NOT EXISTS tenants (
 
 ALTER TABLE tenants ALTER COLUMN createdAt SET DEFAULT CURRENT_TIMESTAMP;
 
-
 CREATE UNIQUE INDEX "nick_idx" ON tenants (nickname);
 CREATE UNIQUE INDEX "email_idx" ON tenants (email);
     
+CREATE TABLE IF NOT EXISTS wallets ( 
+     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     address VARCHAR(255) NOT NULL, 
+     name VARCHAR(255) NOT NULL, 
+     description VARCHAR(255) NOT NULL, 
+     crypto VARCHAR(3) NOT NULL,
+     currency VARCHAR(3) NOT NULL,
+     quantity NUMERIC(20,15) NOT NULL,
+     tenantId INT NOT NULL,
+     createdAt TIMESTAMP WITH TIME ZONE NOT NULL
+);
 
-     
+ALTER TABLE wallets ALTER COLUMN createdAt SET DEFAULT CURRENT_TIMESTAMP;
+CREATE UNIQUE INDEX "address_idx" ON wallets (address);
+/*TODO CONSTRAINT ON ADDRESS*/
+
+ALTER TABLE wallets
+    ADD FOREIGN KEY (tenantId) 
+    REFERENCES tenants(id);

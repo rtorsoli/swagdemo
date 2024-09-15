@@ -6,6 +6,7 @@
             </pattern>
         </encoder>
     </appender>
+    <logger name="org.springframework.r2dbc" level="DEBUG"/>
     <logger name="org.springframework.web" level="INFO"/>
     <root level="INFO">
         <appender-ref ref="STDOUT" />

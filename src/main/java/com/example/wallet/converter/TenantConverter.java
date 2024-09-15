@@ -11,7 +11,7 @@ import com.example.wallet.model.response.TenantResponse;
 
 
 @Component
-public class TenantConverter implements Converter<TenantRequest, TenantDTO, TenantPersistent, TenantResponse>{
+public class TenantConverter {
 
     private TenantConverter() {
         super();

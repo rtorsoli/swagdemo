@@ -127,7 +127,7 @@ public class TenantHandlerImpl implements TenantHandler {
                         }
                 )
                 .map(tenantConverter.requestToDto())
-                .doOnNext(tenant -> tenantService.insert(tenant).subscribe())
+                .flatMap(tenant -> tenantService.insert(tenant))
                 .flatMap(tenant -> ServerResponse
                         .ok()
                         .bodyValue(tenantConverter.dtoToResponse().apply(tenant)));
@@ -150,7 +150,7 @@ public class TenantHandlerImpl implements TenantHandler {
                         }
                 )
                 .map(tenantConverter.requestToDto())
-                .doOnNext(tenant -> tenantService.update(tenant).subscribe())
+                .flatMap(tenant -> tenantService.update(tenant))
                 .flatMap(tenant -> ServerResponse
                         .ok()
                         .bodyValue(tenantConverter.dtoToResponse().apply(tenant)));
@@ -162,7 +162,7 @@ public class TenantHandlerImpl implements TenantHandler {
                 .doOnError(ex -> {
                     throw new InvalidParamException(HttpStatus.BAD_REQUEST, "id");
                 })
-                .doOnNext(id -> tenantService.deleteById(id).subscribe())
+                .flatMap(id -> tenantService.deleteById(id))
                 .flatMap(none -> ServerResponse
                         .noContent().build());
     }

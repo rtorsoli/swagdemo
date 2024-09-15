@@ -32,7 +32,8 @@ public class SecurityConfig {
         http
           .csrf(csrf -> csrf.disable())
           .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/v1/tenants/**").authenticated()
+                .pathMatchers("/api/v1/tenants/**").authenticated()
+                .pathMatchers("/api/v1/wallets/**").authenticated()
                         .pathMatchers("/api/v1/login").permitAll()
                         .pathMatchers("/api/v1/registration").permitAll()
                         .pathMatchers("/api/health").permitAll()
