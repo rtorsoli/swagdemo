@@ -21,4 +21,5 @@ rapidapi:
   uri: "https://realtime-crypto-prices.p.rapidapi.com/get_rates?symbol="
   host: "realtime-crypto-prices.p.rapidapi.com"
   key: "92014cca60msh7a2a98ab47c7233p127fecjsna5315968c38a"
-  
+jwt:
+  expiration: 28800 # token expiration in seconds

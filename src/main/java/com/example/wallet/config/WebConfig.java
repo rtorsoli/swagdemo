@@ -1,7 +1,10 @@
 package com.example.wallet.config;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,5 +37,10 @@ public class WebConfig {
                 .defaultHeader("x-rapidapi-host", rapidapiHost)
                 .defaultHeader("x-rapidapi-key", rapidapiKey)
                 .build();
+    }
+
+    @Bean
+    Supplier<OffsetDateTime> offsetDateTimeGet() {
+        return () -> OffsetDateTime.now(ZoneOffset.UTC);
     }
 }

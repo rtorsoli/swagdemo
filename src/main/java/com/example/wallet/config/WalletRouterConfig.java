@@ -63,7 +63,7 @@ public class WalletRouterConfig {
     @Bean
     RouterFunction<ServerResponse> publicRouter() {
         return route().path("/api/v1", builder -> builder
-                .POST("/registration", RequestPredicates.accept(MediaType.APPLICATION_JSON).and(RequestPredicates.contentType(MediaType.APPLICATION_JSON)), tenantHandler::registration)
+                .POST("/signup", RequestPredicates.accept(MediaType.APPLICATION_JSON).and(RequestPredicates.contentType(MediaType.APPLICATION_JSON)), tenantHandler::registration)
                 .POST("/login", RequestPredicates.accept(MediaType.APPLICATION_JSON).and(RequestPredicates.contentType(MediaType.APPLICATION_JSON)), loginHandler::login)
         ).build();
     }

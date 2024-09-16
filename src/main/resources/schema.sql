@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS tenants (
      firstname VARCHAR(255) NOT NULL, 
      lastname VARCHAR(255) NOT NULL, 
      nickname VARCHAR(255) NOT NULL,
+     roles VARCHAR(255) NOT NULL,
      pwd VARCHAR(255) NOT NULL,
      email VARCHAR(255) NOT NULL,
      createdAt TIMESTAMP WITH TIME ZONE NOT NULL,

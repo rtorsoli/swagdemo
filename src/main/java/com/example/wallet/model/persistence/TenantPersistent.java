@@ -27,6 +27,9 @@ public class TenantPersistent implements Persistent {
     private String lastname;
 
     private String nickname;
+
+    @Builder.Default
+    private String roles = "USER";
     
     @Column("PWD")
     private String password;
