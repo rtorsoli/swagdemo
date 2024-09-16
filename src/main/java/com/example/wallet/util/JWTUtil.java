@@ -13,10 +13,10 @@ import com.example.wallet.model.persistence.TenantPersistent;
 
 import javax.crypto.SecretKey;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.Function;
+import java.util.stream.*;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 @Component
 public class JWTUtil {
     
+    private static final String USER = "USER";
     private static final String ROLE = "role";
     private static final String ID = "id";
     
@@ -49,6 +50,15 @@ public class JWTUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        Optional<Entry<String, Object>> roleEntry = claims.entrySet().stream().filter(e -> e.getKey().equals(ROLE)).findFirst();
+        String roles = roleEntry.map(e -> e.getValue().toString()).orElse(USER);
+        return Stream.of(roles.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -65,7 +75,7 @@ public class JWTUtil {
     public TokenInfo generateToken(TenantPersistent tenant) {
         var claims = new HashMap<String, Object>() {{
                 put(ROLE, tenant.getRoles());
-                put(ID, tenant.getRoles());
+                put(ID, tenant.getId());
         }};
         var expirationDate = offsetDateTimeGet.get().plusSeconds(Long.parseLong(expirationTimeInSeconds));
 

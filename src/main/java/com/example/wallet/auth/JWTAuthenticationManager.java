@@ -18,6 +18,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
@@ -38,11 +39,11 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
                 .map(userDetails -> {
 
                     if (jwtUtil.validateToken(token, userDetails.getNickname(), userDetails.getEmail())) {
-                        String role = "USER";
+                        List<String> rolesMap = jwtUtil.extractRoles(token);
                         return new UsernamePasswordAuthenticationToken(
                             username,
                             null,
-                            List.of(new SimpleGrantedAuthority(role))
+                            rolesMap.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
                         );
                     } else {
                         throw new AuthorizationException(HttpStatus.FORBIDDEN,"Invalid JWT token");
