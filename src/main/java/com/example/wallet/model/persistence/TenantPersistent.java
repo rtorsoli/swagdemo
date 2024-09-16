@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import com.example.wallet.model.Persistent;
+import com.example.wallet.model.enumeration.RoleEnum;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class TenantPersistent implements Persistent {
     private String nickname;
 
     @Builder.Default
-    private String roles = "USER";
+    private String roles = RoleEnum.USER.toString();
     
     @Column("PWD")
     private String password;

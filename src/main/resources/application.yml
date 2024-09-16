@@ -4,10 +4,6 @@ spring:
   threads:
     virtual:
       enabled: true
-  security:
-    user:
-      name: admin
-      password: admin
 server:
   port: 8080
 management:
